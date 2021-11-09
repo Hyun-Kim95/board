@@ -1,1 +1,1 @@
-# https://hyun-kim95.github.io/board/
+# 기본 게시판
