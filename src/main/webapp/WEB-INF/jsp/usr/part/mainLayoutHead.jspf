@@ -1,0 +1,41 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ include file="head.jspf"%>
+<header class="top-bar h-20 bg-white">
+	<div class="container mx-auto h-full flex">
+		<a href="/usr/home/main" class="logo flex items-center ml-2">
+			<span>
+				<i class="fas fa-university"></i>
+			</span>
+			<span>게시판 프로젝트 (유저)</span>
+		</a>
+
+		<div class="flex-grow"></div>
+
+		<nav class="menu-box-1">
+			<ul class="flex h-full">
+				<li>
+					<a class="text-xl px-4 flex items-center h-full hover:underline" href="/adm/home/main">
+						<span>관리자 홈</span>
+					</a>
+				</li>
+				<li>
+					<a class="text-xl px-4 flex items-center h-full hover:underline" href="/usr/article/list?boardId=1">
+						<span>게시판</span>
+					</a>
+				</li>
+				<li>
+					<a class="text-xl px-4 flex items-center h-full hover:underline" href="/usr/member/detail">
+						<span>마이페이지</span>
+					</a>
+				</li>
+				<li>
+					<a class="text-xl px-4 flex items-center h-full hover:underline" href="/usr/member/doLogout">
+						<span>로그아웃</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</header>
