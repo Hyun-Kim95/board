@@ -37,9 +37,9 @@ function ArticleAdd__checkAndSubmit(form) {
 
 	var maxSizeMb = 50;
 	var maxSize = maxSizeMb * 1024 * 1024;
-
+	
 	for ( let inputNo = 1; inputNo <= ArticleAdd__fileInputMaxCount; inputNo++ ) {
-		const input = form["file__article__0__common__attachment__" + inputNo];
+		const input = form["file__0__" + inputNo];
 		
 		if (input.value) {
 			if (input.files[0].size > maxSize) {
@@ -57,7 +57,7 @@ function ArticleAdd__checkAndSubmit(form) {
 		}
 		
 		for ( let inputNo = 1; inputNo <= ArticleAdd__fileInputMaxCount; inputNo++ ) {
-			const input = form["file__article__0__common__attachment__" + inputNo];
+			const input = form["file__0__" + inputNo];
 			input.value = '';
 		}
 		
@@ -68,7 +68,7 @@ function ArticleAdd__checkAndSubmit(form) {
 		var needToUpload = false;
 
 		for ( let inputNo = 1; inputNo <= ArticleAdd__fileInputMaxCount; inputNo++ ) {
-			const input = form["file__article__0__common__attachment__" + inputNo];
+			const input = form["file__0__" + inputNo];
 
 			if ( input.value.length > 0 ) {
 				needToUpload = true;
@@ -95,7 +95,7 @@ function ArticleAdd__checkAndSubmit(form) {
 	}
 
 	ArticleAdd__submited = true;
-
+	
 	startUploadFiles(startSubmitForm);
 }
 </script>
@@ -122,14 +122,14 @@ function ArticleAdd__checkAndSubmit(form) {
 					<textarea name="body" class="form-row-input w-full rounded-sm" placeholder="내용을 입력해주세요."></textarea>
 				</div>
 			</div>
+			
 			<c:forEach begin="1" end="${fileInputMaxCount}" var="inputNo">
 				<div class="form-row flex flex-col lg:flex-row">
 					<div class="lg:flex lg:items-center lg:w-28">
 						<span>첨부파일 ${inputNo}</span>
 					</div>
 					<div class="lg:flex-grow">
-						<input type="file" name="file__article__0__common__attachment__${inputNo}"
-							class="form-row-input w-full rounded-sm" />
+						<input type="file" name="file__0__${inputNo}" class="form-row-input w-full rounded-sm"/>
 					</div>
 				</div>
 			</c:forEach>

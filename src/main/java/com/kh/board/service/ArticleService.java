@@ -41,7 +41,7 @@ public class ArticleService {
 	public void deleteArticle(int id) {
 		articleDao.deleteArticle(id);
 
-		genFileService.deleteGenFiles("article", id);
+		genFileService.changeDeleteGenFilesByRelId(id);
 	}
 
 	public int modifyArticle(Map<String, Object> param) {
@@ -84,13 +84,13 @@ public class ArticleService {
 		
 		List<Article> articles = articleDao.getForPrintArticles(boardId, searchKeywordType, searchKeyword, limitStart, limitTake);
 		List<Integer> articleIds = articles.stream().map(article -> article.getId()).collect(Collectors.toList());
-		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("article", articleIds, "common", "attachment");
+		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo(articleIds);
 		
 		for (Article article : articles) {
 			Map<String, GenFile> mapByFileNo = filesMap.get(article.getId());
 
 			if (mapByFileNo != null) {
-				article.getExtraNotNull().put("file__common__attachment", mapByFileNo);
+				article.getExtraNotNull().put("file", mapByFileNo);
 			}
 		}
 		

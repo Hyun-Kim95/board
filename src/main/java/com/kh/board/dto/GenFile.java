@@ -15,9 +15,6 @@ public class GenFile extends EntityDto {
 	private String updateDate;
 	private boolean delStatus;
 	private String delDate;
-	private String typeCode;
-	private String type2Code;
-	private String relTypeCode;
 	private int relId;
 	private String fileExtTypeCode;
 	private String fileExtType2Code;
@@ -34,7 +31,7 @@ public class GenFile extends EntityDto {
 	
 	@JsonIgnore
 	private String getBaseFileUri() {
-		return "/" + relTypeCode + "/" + fileDir + "/" + getFileName();
+		return "/" + fileDir + "/" + getFileName();
 	}
 
 	public String getFileName() {

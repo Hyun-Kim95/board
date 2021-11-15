@@ -29,7 +29,7 @@ function ArticleModify__checkAndSubmit(form) {
 	}
 
 	form.body.value = form.body.value.trim();
-
+	
 	if ( form.body.value.length == 0 ) {
 		alert('내용을 입력해주세요.');
 		form.body.focus();
@@ -39,9 +39,9 @@ function ArticleModify__checkAndSubmit(form) {
 
 	var maxSizeMb = 50;
 	var maxSize = maxSizeMb * 1024 * 1024;
-
-	for ( let inputNo = 1; inputNo <= ArticleModify__fileInputMaxCount; inputNo++ ) {
-		const input = form["file__article__" + articleId + "__common__attachment__" + inputNo];
+	
+	for (let inputNo = 1; inputNo <= ArticleModify__fileInputMaxCount; inputNo++ ) {
+		const input = form["file__" + articleId + "__" + inputNo];
 		
 		if (input.value) {
 			if (input.files[0].size > maxSize) {
@@ -52,25 +52,23 @@ function ArticleModify__checkAndSubmit(form) {
 			}
 		}
 	}
-
+	
 	const startSubmitForm = function(data) {
 		if (data && data.body && data.body.genFileIdsStr) {
 			form.genFileIdsStr.value = data.body.genFileIdsStr;
 		}
 		
 		for ( let inputNo = 1; inputNo <= ArticleModify__fileInputMaxCount; inputNo++ ) {
-			const input = form["file__article__" + articleId + "__common__attachment__" + inputNo];
+			const input = form["file__" + articleId + "__" + inputNo];
 			input.value = '';
 		}
-
+		
 		for ( let inputNo = 1; inputNo <= ArticleModify__fileInputMaxCount; inputNo++ ) {
-			const input = form["deleteFile__article__" + articleId + "__common__attachment__" + inputNo];
-
+			const input = form["deleteFile__" + articleId + "__" + inputNo];
 			if ( input ) {
 				input.checked = false;
 			}
 		}
-		
 		form.submit();
 	};
 
@@ -78,18 +76,17 @@ function ArticleModify__checkAndSubmit(form) {
 		var needToUpload = false;
 
 		for ( let inputNo = 1; inputNo <= ArticleModify__fileInputMaxCount; inputNo++ ) {
-			const input = form["file__article__" + articleId + "__common__attachment__" + inputNo];
+			const input = form["file__" + articleId + "__" + inputNo];
 
 			if ( input.value.length > 0 ) {
 				needToUpload = true;
 				break;
 			}
 		}
-
+		
 		if ( needToUpload == false ) {
 			for ( let inputNo = 1; inputNo <= ArticleModify__fileInputMaxCount; inputNo++ ) {
-				const input = form["deleteFile__article__" + articleId + "__common__attachment__" + inputNo];
-
+				const input = form["deleteFile__" + articleId + "__" + inputNo];
 				if ( input && input.checked ) {
 					needToUpload = true;
 					break;
@@ -145,21 +142,21 @@ function ArticleModify__checkAndSubmit(form) {
 			</div>
 			<c:forEach begin="1" end="${fileInputMaxCount}" var="inputNo">
 				<c:set var="fileNo" value="${String.valueOf(inputNo)}" />
-                <c:set var="file" value="${article.extra.file__common__attachment[fileNo]}" />
+                <c:set var="file" value="${article.extra.file[fileNo]}" />
 				<div class="form-row flex flex-col lg:flex-row">
 					<div class="lg:flex lg:items-center lg:w-28">
 						<span>첨부파일 ${inputNo}</span>
 					</div>
 					<div class="lg:flex-grow input-file-wrap">
-						<input type="file" name="file__article__${article.id}__common__attachment__${inputNo}"
-							class="form-row-input w-full rounded-sm" />
+						<input type="file" name="file__${article.id}__${inputNo}"
+							class="form-row-input w-full rounded-sm"/>
 						<c:if test="${file != null}">
 							<div>
-								<a href="${file.downloadUrl}" target="_blank" class="text-blue-500 hover:underline" href="#">${file.originFileName}</a> ( ${Util.numberFormat(file.fileSize)} Byte )
+								<a class="text-blue-500 hover:underline" href="${file.forPrintUrl}" target="_blank">${file.originFileName}</a> ( ${Util.numberFormat(file.fileSize)} Byte )
 							</div>
 							<div>
 								<label>
-									<input onclick="$(this).closest('.input-file-wrap').find(' > input[type=file]').val('')" type="checkbox" name="deleteFile__article__${article.id}__common__attachment__${fileNo}" value="Y" />
+									<input type="checkbox" name="deleteFile__${article.id}__${fileNo}" value="Y" />
 									<span>삭제</span>
                             	</label>
 							</div>

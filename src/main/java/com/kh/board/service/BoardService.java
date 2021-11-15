@@ -44,5 +44,4 @@ public class BoardService {
 	public Board getBoard(int id) {
 		return boardDao.getBoard(id);
 	}
-
 }

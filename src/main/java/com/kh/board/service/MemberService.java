@@ -51,8 +51,6 @@ public class MemberService {
 
 		int id = Util.getAsInt(param.get("id"), 0);
 
-		genFileService.changeInputFileRelIds(param, id);
-
 		return new ResultData("S-1", String.format("%s님 환영합니다.", param.get("nickname")), "id", id);
 	}
 

@@ -19,7 +19,7 @@ function BoardModify__checkAndSubmit(form) {
 
 		return;
 	}
-
+	
 	form.name.value = form.name.value.trim();
 
 	if ( form.name.value.length == 0 ) {
@@ -43,7 +43,7 @@ function BoardModify__checkAndSubmit(form) {
 					<span>게시판 코드</span>
 				</div>
 				<div class="lg:flex-grow">
-					<input value="${board.code}" type="text" name="code" autofocus="autofocus"
+					<input type="text" name="code" autofocus="autofocus"
 						class="form-row-input w-full rounded-sm" placeholder="게시판 코드" />
 				</div>
 			</div>

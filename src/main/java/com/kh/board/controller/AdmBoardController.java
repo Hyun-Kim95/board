@@ -47,7 +47,7 @@ public class AdmBoardController extends BaseController{
 		if (param.get("code") == null) {
 			return msgAndBack(req, "code를 입력해주세요.");
 		}
-
+		
 		if (param.get("name") == null) {
 			return msgAndBack(req, "name을 입력해주세요.");
 		}
@@ -87,11 +87,6 @@ public class AdmBoardController extends BaseController{
 		if (board == null) {
 			return msgAndBack(req, "존재하지 않는 게시판입니다.");
 		}
-		
-		req.setAttribute("board", board);
-		System.out.println("=======================");
-		System.out.println(board);
-		System.out.println("=======================");
 
 		return "adm/board/modify";
 	}

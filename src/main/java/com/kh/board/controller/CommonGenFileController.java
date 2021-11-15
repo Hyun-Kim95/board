@@ -3,6 +3,8 @@ package com.kh.board.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,16 +47,36 @@ public class CommonGenFileController {
 		String filePath = genFile.getFilePath(genFileDirPath);
 
 		Resource resource = new InputStreamResource(new FileInputStream(filePath));
-
-		// Try to determine file's content type
 		String contentType = request.getServletContext().getMimeType(new File(filePath).getAbsolutePath());
-
+		String name = getFileNm(genFile.getOriginFileName());
 		if (contentType == null) {
 			contentType = "application/octet-stream";
 		}
 
-		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + genFile.getOriginFileName() + "\"")
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + name + "\"")
 				.contentType(MediaType.parseMediaType(contentType)).body(resource);
 	}
+
+	// 한글 이름의 파일 다운로드를 위해서
+	public String getFileNm(String fileNm) {
+		String reFileNm = null;
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < fileNm.length(); i++) {
+			char c = fileNm.charAt(i);
+			if (c > '~') {
+				try {
+					sb.append(URLEncoder.encode(Character.toString(c), "UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				sb.append(c);
+			}
+		}
+		reFileNm = sb.toString();
+
+		return reFileNm;
+	}
+
 }

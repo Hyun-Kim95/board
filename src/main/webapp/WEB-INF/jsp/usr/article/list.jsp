@@ -52,7 +52,7 @@
 				<div class="bg-gray-100 m-1 p-2 shadow-md">
 					<c:set var="detailUrl" value="detail?id=${article.id}" />
 					<c:set var="thumbFileNo" value="${String.valueOf(1)}" />
-					<c:set var="thumbFile" value="${article.extra.file__common__attachment[thumbFileNo]}" />
+					<c:set var="thumbFile" value="${article.extra.file[thumbFileNo]}" />
 					<c:set var="thumbUrl" value="${thumbFile.getForPrintUrl()}" />
 					<div class="flex items-center mt-10">
 						<a href="${detailUrl}" class="font-bold">NO. ${article.id}</a>

@@ -8,17 +8,11 @@
 		INSERT INTO genFile
 		SET regDate = NOW(),
 		updateDate = NOW(),
-		relTypeCode
-		= #{relTypeCode},
 		relId = #{relId},
-		typeCode = #{typeCode},
-		type2Code =
-		#{type2Code},
 		fileNo = #{fileNo},
 		originFileName = #{originFileName},
 		fileExtTypeCode = #{fileExtTypeCode},
-		fileExtType2Code =
-		#{fileExtType2Code},
+		fileExtType2Code = #{fileExtType2Code},
 		fileSize = #{fileSize},
 		fileDir = #{fileDir},
 		fileExt = #{fileExt}
@@ -28,17 +22,8 @@
 		SELECT *
 		FROM genFile
 		WHERE 1
-		<if test="relTypeCode != null">
-			AND relTypeCode = #{relTypeCode}
-		</if>
 		<if test="relId != null">
 			AND relId = #{relId}
-		</if>
-		<if test="typeCode != null">
-			AND typeCode = #{typeCode}
-		</if>
-		<if test="type2Code != null">
-			AND type2Code = #{type2Code}
 		</if>
 		<if test="fileNo != null">
 			AND fileNo = #{fileNo}
@@ -56,30 +41,12 @@
 		SELECT *
 		FROM genFile
 		WHERE 1
-		AND relTypeCode = #{relTypeCode}
-		AND relId =
-		#{relId}
-		<if test="typeCode != null">
-			AND typeCode = #{typeCode}
-		</if>
-		<if test="type2Code != null">
-			AND type2Code = #{type2Code}
-		</if>
-		ORDER BY typeCode, type2Code, fileNo
-	</select>
-
-	<select id="getGenFilesByRelTypeCodeAndRelId"
-		resultType="GenFile">
-		SELECT *
-		FROM genFile
-		WHERE 1
-		AND relTypeCode = #{relTypeCode}
 		AND relId = #{relId}
-		ORDER BY typeCode, type2Code, fileNo
+		ORDER BY fileNo
 	</select>
 
 	<select
-		id="getGenFilesRelTypeCodeAndRelIdsAndTypeCodeAndType2Code"
+		id="getGenFilesRelIds"
 		resultType="GenFile">
 		SELECT *
 		FROM genFile
@@ -91,10 +58,6 @@
 				#{relId}
 			</foreach>
 		</if>
-		AND relTypeCode = #{relTypeCode}
-		AND typeCode = #{typeCode}
-		AND
-		type2Code = #{type2Code}
 		ORDER BY relId, fileNo
 	</select>
 
@@ -106,11 +69,20 @@
 		</set>
 		WHERE id = #{id}
 	</update>
+	
+	<update id="changeDeleteFileById">
+		UPDATE genFile
+		<set>
+			delDate = NOW(),
+			delStatus = 1,
+			relId = 0
+		</set>
+		WHERE id = #{id}
+	</update>
 
 	<delete id="deleteFiles">
 		DELETE FROM genFile
-		WHERE relTypeCode = #{relTypeCode}
-		AND relId = #{relId}
+		WHERE relId = #{relId}
 	</delete>
 
 	<delete id="deleteFile">

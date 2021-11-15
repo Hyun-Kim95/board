@@ -11,7 +11,7 @@ function BoardAdd__checkAndSubmit(form) {
 		alert('처리중입니다.');
 		return;
 	}
-	
+
 	form.code.value = form.code.value.trim();
 
 	if ( form.code.value.length == 0 ) {
@@ -20,7 +20,7 @@ function BoardAdd__checkAndSubmit(form) {
 
 		return false;
 	}
-
+	
 	form.name.value = form.name.value.trim();
 
 	if ( form.name.value.length == 0 ) {

@@ -28,14 +28,12 @@ public class GenFileService {
 	@Autowired
 	private GenFileDao genFileDao;
 
-	public ResultData saveMeta(String relTypeCode, int relId, String typeCode, String type2Code, int fileNo,
-			String originFileName, String fileExtTypeCode, String fileExtType2Code, String fileExt, int fileSize,
-			String fileDir) {
+	public ResultData saveMeta(int relId, int fileNo, String originFileName, String fileExtTypeCode,
+			String fileExtType2Code, String fileExt, int fileSize, String fileDir) {
 
-		Map<String, Object> param = Util.mapOf("relTypeCode", relTypeCode, "relId", relId, "typeCode", typeCode,
-				"type2Code", type2Code, "fileNo", fileNo, "originFileName", originFileName, "fileExtTypeCode",
-				fileExtTypeCode, "fileExtType2Code", fileExtType2Code, "fileExt", fileExt, "fileSize", fileSize,
-				"fileDir", fileDir);
+		Map<String, Object> param = Util.mapOf("relId", relId, "fileNo", fileNo, "originFileName", originFileName,
+				"fileExtTypeCode", fileExtTypeCode, "fileExtType2Code", fileExtType2Code, "fileExt", fileExt,
+				"fileSize", fileSize, "fileDir", fileDir);
 		genFileDao.saveMeta(param);
 
 		int id = Util.getAsInt(param.get("id"), 0);
@@ -55,12 +53,8 @@ public class GenFileService {
 		if (fileSize <= 0) {
 			return new ResultData("F-2", "파일이 업로드 되지 않았습니다.");
 		}
-
-		String relTypeCode = fileInputNameBits[1];
-		int relId = Integer.parseInt(fileInputNameBits[2]);
-		String typeCode = fileInputNameBits[3];
-		String type2Code = fileInputNameBits[4];
-		int fileNo = Integer.parseInt(fileInputNameBits[5]);
+		int relId = Integer.parseInt(fileInputNameBits[1]);
+		int fileNo = Integer.parseInt(fileInputNameBits[2]);
 		String originFileName = multipartFile.getOriginalFilename();
 		String fileExtTypeCode = Util.getFileExtTypeCodeFromFileName(multipartFile.getOriginalFilename());
 		String fileExtType2Code = Util.getFileExtType2CodeFromFileName(multipartFile.getOriginalFilename());
@@ -75,19 +69,19 @@ public class GenFileService {
 		String fileDir = Util.getNowYearMonthDateStr();
 
 		if (relId > 0) {
-			GenFile oldGenFile = getGenFile(relTypeCode, relId, typeCode, type2Code, fileNo);
+			GenFile oldGenFile = getGenFile(relId, fileNo);
 
 			if (oldGenFile != null) {
 				deleteGenFile(oldGenFile);
 			}
 		}
 
-		ResultData saveMetaRd = saveMeta(relTypeCode, relId, typeCode, type2Code, fileNo, originFileName,
-				fileExtTypeCode, fileExtType2Code, fileExt, fileSize, fileDir);
+		ResultData saveMetaRd = saveMeta(relId, fileNo, originFileName, fileExtTypeCode, fileExtType2Code, fileExt,
+				fileSize, fileDir);
 		int newGenFileId = (int) saveMetaRd.getBody().get("id");
 
 		// 새 파일이 저장될 폴더(io파일) 객체 생성
-		String targetDirPath = genFileDirPath + "/" + relTypeCode + "/" + fileDir;
+		String targetDirPath = genFileDirPath + "/" + fileDir;
 		java.io.File targetDir = new java.io.File(targetDirPath);
 
 		// 새 파일이 저장될 폴더가 존재하지 않는다면 생성
@@ -109,18 +103,17 @@ public class GenFileService {
 				targetFileName, "fileInputName", fileInputName);
 	}
 
-	public List<GenFile> getGenFiles(String relTypeCode, int relId, String typeCode, String type2Code) {
-		return genFileDao.getGenFiles(relTypeCode, relId, typeCode, type2Code);
+	public List<GenFile> getGenFiles(int relId) {
+		return genFileDao.getGenFiles(relId);
 	}
 
-	public GenFile getGenFile(String relTypeCode, int relId, String typeCode, String type2Code, int fileNo) {
-		return genFileDao.getGenFile(relTypeCode, relId, typeCode, type2Code, fileNo);
+	public GenFile getGenFile(int relId, int fileNo) {
+		return genFileDao.getGenFile(relId, fileNo);
 	}
 
 	public ResultData saveFiles(Map<String, Object> param, MultipartRequest multipartRequest) {
 		// 업로드 시작
 		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-
 		Map<String, ResultData> filesResultData = new HashMap<>();
 		List<Integer> genFileIds = new ArrayList<>();
 
@@ -145,13 +138,10 @@ public class GenFileService {
 			String[] inputNameBits = inputName.split("__");
 
 			if (inputNameBits[0].equals("deleteFile")) {
-				String relTypeCode = inputNameBits[1];
-				int relId = Integer.parseInt(inputNameBits[2]);
-				String typeCode = inputNameBits[3];
-				String type2Code = inputNameBits[4];
-				int fileNo = Integer.parseInt(inputNameBits[5]);
+				int relId = Integer.parseInt(inputNameBits[1]);
+				int fileNo = Integer.parseInt(inputNameBits[2]);
 
-				GenFile oldGenFile = getGenFile(relTypeCode, relId, typeCode, type2Code, fileNo);
+				GenFile oldGenFile = getGenFile(relId, fileNo);
 
 				if (oldGenFile != null) {
 					deleteGenFile(oldGenFile);
@@ -168,11 +158,36 @@ public class GenFileService {
 		genFileDao.changeRelId(id, relId);
 	}
 
-	public void deleteGenFiles(String relTypeCode, int relId) {
-		List<GenFile> genFiles = genFileDao.getGenFilesByRelTypeCodeAndRelId(relTypeCode, relId);
+	public void changeDeleteGenFilesByRelId(int relId) {
+		List<GenFile> genFiles = genFileDao.getGenFiles(relId);
 
 		for (GenFile genFile : genFiles) {
-			deleteGenFile(genFile);
+			changeDeleteFileById(genFile);
+		}
+	}
+
+	public void changeDeleteFileById(GenFile gen) {
+		// 삭제 처리
+		genFileDao.changeDeleteFileById(gen.getId());
+		// 삭제파일 이동
+		moveFile("deleteFolder", gen.getId()+"."+gen.getFileExt(), "C:/work/board-file/" + Util.getNowYearMonthDateStr(),
+				"C:/work/board-file");
+	}
+	// 삭제파일 모아둘 폴더
+	public void moveFile(String folderName, String fileName, String beforeFilePath, String afterFilePath) {
+		String path = afterFilePath + "/" + folderName;
+		String filePath = path + "/" + fileName;
+		java.io.File dir = new java.io.File(path);
+		if (!dir.exists()) {
+			// 폴더 없으면 폴더 생성
+			dir.mkdirs();
+		}
+		try {
+			File file = new File(beforeFilePath+"/"+fileName);
+			// 옮기고자 하는 경로로 파일 이동
+			file.renameTo(new File(filePath));
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -187,10 +202,8 @@ public class GenFileService {
 		return genFileDao.getGenFileById(id);
 	}
 
-	public Map<Integer, Map<String, GenFile>> getFilesMapKeyRelIdAndFileNo(String relTypeCode, List<Integer> relIds,
-			String typeCode, String type2Code) {
-		List<GenFile> genFiles = genFileDao.getGenFilesRelTypeCodeAndRelIdsAndTypeCodeAndType2Code(relTypeCode, relIds,
-				typeCode, type2Code);
+	public Map<Integer, Map<String, GenFile>> getFilesMapKeyRelIdAndFileNo(List<Integer> relIds) {
+		List<GenFile> genFiles = genFileDao.getGenFilesRelIds(relIds);
 		Map<Integer, Map<String, GenFile>> rs = new LinkedHashMap<>();
 
 		for (GenFile genFile : genFiles) {
@@ -205,9 +218,9 @@ public class GenFileService {
 	}
 
 	public void changeInputFileRelIds(Map<String, Object> param, int id) {
-		String genFileIdsStr = Util.ifEmpty((String)param.get("genFileIdsStr"), null);
-		
-		if ( genFileIdsStr != null ) {
+		String genFileIdsStr = Util.ifEmpty((String) param.get("genFileIdsStr"), null);
+
+		if (genFileIdsStr != null) {
 			List<Integer> genFileIds = Util.getListDividedBy(genFileIdsStr, ",");
 
 			// 파일이 먼저 생성된 후에, 관련 데이터가 생성되는 경우에는, file의 relId가 일단 0으로 저장된다.
@@ -217,5 +230,4 @@ public class GenFileService {
 			}
 		}
 	}
-
 }
