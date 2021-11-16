@@ -14,6 +14,8 @@ public interface ArticleDao {
 	Article getArticle(@Param("id") int id);
 
 	void addArticle(Map<String, Object> param);
+	
+	void deleteChangeArticle(@Param("id") int id);
 
 	void deleteArticle(@Param("id") int id);
 
@@ -36,4 +38,11 @@ public interface ArticleDao {
 			@Param("searchKeyword") String searchKeyword);
 
 	List<Article> getArticlesBoardId(@Param("id") int id);
+
+	int getArticlesTotalCountByDel(@Param("boardId") int boardId, @Param("searchKeywordType") String searchKeywordType,
+			@Param("searchKeyword") String searchKeyword);
+
+	void restoreArticle(@Param("id")int id);
+
+	int getArticlesTotalCountByDelGenFile();
 }

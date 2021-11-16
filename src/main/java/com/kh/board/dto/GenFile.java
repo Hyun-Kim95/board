@@ -24,6 +24,8 @@ public class GenFile extends EntityDto {
 	private String fileDir;
 	private String originFileName;
 	
+	private String extra__writer;
+	
 	@JsonIgnore
 	public String getFilePath(String genFileDirPath) {
 		return genFileDirPath + getBaseFileUri();

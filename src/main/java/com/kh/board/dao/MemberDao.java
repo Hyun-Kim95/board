@@ -26,5 +26,5 @@ public interface MemberDao {
 
 	void deleteMember(@Param("id")int id);
 
-	Member getNickname(@Param("id")int id);
+	String getNickname(@Param("id")int id);
 }

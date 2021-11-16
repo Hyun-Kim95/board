@@ -39,7 +39,7 @@ public class ArticleService {
 	}
 
 	public void deleteArticle(int id) {
-		articleDao.deleteArticle(id);
+		articleDao.deleteChangeArticle(id);
 
 		genFileService.changeDeleteGenFilesByRelId(id);
 	}
@@ -107,5 +107,20 @@ public class ArticleService {
 
 	public List<Article> getArticlesBoardId(int id) {
 		return articleDao.getArticlesBoardId(id);
+	}
+
+	public void deleteCompletelyArticle(int id) {
+		articleDao.deleteArticle(id);
+
+		genFileService.deleteGenFiles(id);
+	}
+
+	public int getArticlesTotalCountByDel(int boardId, String searchKeywordType, String searchKeyword) {
+		return articleDao.getArticlesTotalCountByDel(boardId, searchKeywordType, searchKeyword);
+	}
+
+	public void doRestore(int id) {
+		genFileService.restoreGenFilesByRelId(id);
+		articleDao.restoreArticle(id);
 	}
 }

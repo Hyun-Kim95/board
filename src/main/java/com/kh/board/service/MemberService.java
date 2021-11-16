@@ -58,7 +58,7 @@ public class MemberService {
 		return memberDao.getMember(id);
 	}
 	
-	public Member getNickname(int id) {
+	public String getNickname(int id) {
 		return memberDao.getNickname(id);
 	}
 

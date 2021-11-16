@@ -10,6 +10,9 @@
 
 <section class="section-1">
 	<div class="bg-white shadow-md rounded container mx-auto p-8 mt-8">
+		<div>
+			<a href="genList" class="px-2 py-1 bg-gray-600 text-gray-100 font-bold rounded hover:bg-gray-500">삭제된 첨부파일 모음</a>
+		</div>
 		<div class="flex items-center">
 			<select class="py-2 select-board-id">
 				<c:forEach items="${boards}" var="b">
@@ -24,10 +27,6 @@
 				});
 			</script>
 
-			<div class="flex-grow"></div>
-
-			<a href="add?boardId=${board.id}"
-				class="btn-primary bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded">글쓰기</a>
 		</div>
 
 		<div>총 게시물 수 : ${Util.numberFormat(totalItemsCount)}</div>
@@ -53,7 +52,7 @@
 
 		<div>
 			<c:forEach items="${articles}" var="article">
-				<c:if test="${article.delStatus == 0}">
+				<c:if test="${article.delStatus == 1}">
 					<div class="bg-gray-100 m-1 p-2 shadow-md">
 						<c:set var="detailUrl" value="detail?id=${article.id}" />
 						<c:set var="thumbFileNo" value="${String.valueOf(1)}" />
@@ -61,7 +60,7 @@
 						<c:set var="thumbUrl" value="${thumbFile.getForPrintUrl()}" />
 						<div class="flex items-center mt-10">
 							<a href="${detailUrl}" class="font-bold">NO. ${article.id}</a>
-							<a href="${detailUrl}" class="ml-2 font-light text-gray-600">${article.regDate}</a>
+							<a href="${detailUrl}" class="ml-2 font-light text-gray-600">${article.delDate}</a>
 							<div class="flex-grow"></div>
 							<a href="list?boardId=${article.boardId}"
 								class="px-2 py-1 bg-gray-600 text-gray-100 font-bold rounded hover:bg-gray-500">${article.extra__boardName}</a>
@@ -70,8 +69,8 @@
 							<a href="${detailUrl}"
 								class="text-2xl text-gray-700 font-bold hover:underline">${article.title}</a>
 							<c:if test="${thumbUrl != null}">
-								<a class="block" href="${detailUrl}"> <img class="max-w-sm"
-									src="${thumbUrl}" alt="" />
+								<a class="block" href="${detailUrl}">
+									<img class="max-w-sm" src="${thumbUrl}" alt="" />
 								</a>
 							</c:if>
 							<a href="${detailUrl}" class="mt-2 text-gray-600 block">${article.body}</a>
@@ -79,11 +78,11 @@
 						<div class="flex items-center mt-4">
 							<a href="detail?id=${article.id}"
 								class="text-blue-500 hover:underline">자세히 보기</a>
-							<a href="modify?id=${article.id}"
-								class="ml-2 text-blue-500 hover:underline">수정</a>
-							<a onclick="if ( !confirm('삭제하시겠습니까?') ) return false;"
-								href="doDelete?id=${article.id}"
-								class="ml-2 text-blue-500 hover:underline">삭제</a>
+							<a onclick="if ( !confirm('복구하시겠습니까?') ) return false;" href="restore?id=${article.id}"
+								class="ml-2 text-blue-500 hover:underline">복구</a>
+							<a onclick="if ( !confirm('완전삭제하시겠습니까?') ) return false;"
+								href="deleteCompletely?id=${article.id}"
+								class="ml-2 text-blue-500 hover:underline">완전 삭제</a>
 							<div class="flex-grow"></div>
 							<div>
 								<a class="flex items-center">

@@ -11,6 +11,8 @@ public class Article extends EntityDto {
 	private int id;
 	private String regDate;
 	private String updateDate;
+	private String delDate;
+	private int delStatus;
 	private int boardId;
 	private int memberId;
 	private String title;

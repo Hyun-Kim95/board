@@ -35,6 +35,11 @@
 					</a>
 				</li>
 				<li>
+					<a class="text-xl px-4 flex items-center h-full hover:underline" href="/adm/delArticle/list?boardId=1">
+						<span>삭제된 게시물 관리</span>
+					</a>
+				</li>
+				<li>
 					<a class="text-xl px-4 flex items-center h-full hover:underline" href="/adm/member/doLogout">
 						<span>로그아웃</span>
 					</a>

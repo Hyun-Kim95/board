@@ -144,7 +144,7 @@ public class GenFileService {
 				GenFile oldGenFile = getGenFile(relId, fileNo);
 
 				if (oldGenFile != null) {
-					deleteGenFile(oldGenFile);
+					changeDeleteFileById(oldGenFile);
 					deleteCount++;
 				}
 			}
@@ -169,9 +169,10 @@ public class GenFileService {
 	public void changeDeleteFileById(GenFile gen) {
 		// 삭제 처리
 		genFileDao.changeDeleteFileById(gen.getId());
+		String fileDir = "deleteFolder";
 		// 삭제파일 이동
-		moveFile("deleteFolder", gen.getId()+"."+gen.getFileExt(), "C:/work/board-file/" + Util.getNowYearMonthDateStr(),
-				"C:/work/board-file");
+		moveFile(fileDir, gen.getId()+"."+gen.getFileExt(), genFileDirPath + "/" + Util.getNowYearMonthDateStr(),
+				genFileDirPath);
 	}
 	// 삭제파일 모아둘 폴더
 	public void moveFile(String folderName, String fileName, String beforeFilePath, String afterFilePath) {
@@ -191,9 +192,9 @@ public class GenFileService {
 		}
 	}
 
-	private void deleteGenFile(GenFile genFile) {
+	public void deleteGenFile(GenFile genFile) {
 		String filePath = genFile.getFilePath(genFileDirPath);
-		Util.delteFile(filePath);
+		Util.deleteFile(filePath);
 
 		genFileDao.deleteFile(genFile.getId());
 	}
@@ -229,5 +230,37 @@ public class GenFileService {
 				changeRelId(genFileId, id);
 			}
 		}
+	}
+
+	public void deleteGenFiles(int id) {
+		List<GenFile> genFiles = genFileDao.getGenFiles(id);
+
+		for (GenFile genFile : genFiles) {
+			deleteGenFile(genFile);
+		}
+	}
+
+	public void restoreGenFilesByRelId(int relId) {
+		List<GenFile> genFiles = genFileDao.getGenFiles(relId);
+
+		for (GenFile gen : genFiles) {
+			String fileDir = Util.getNowYearMonthDateStr();
+			genFileDao.restoreFileById(gen.getId(), fileDir);
+			moveFile(fileDir, gen.getId()+"."+gen.getFileExt(), genFileDirPath + "/" + "deleteFolder",
+					genFileDirPath);
+		}
+	}
+
+	public int getGenFilesTotalCountByDel() {
+		return genFileDao.getGenFilesTotalCountByDel();
+	}
+
+	public List<GenFile> getForPrintGenFilesByDel(int page, int itemsInAPage) {
+		int limitStart = (page - 1) * itemsInAPage;
+		int limitTake = itemsInAPage;
+		
+		List<GenFile> genFiles = genFileDao.getForPrintGenFilesByDel(limitStart, limitTake);
+		
+		return genFiles;
 	}
 }

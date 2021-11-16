@@ -27,4 +27,10 @@ public interface GenFileDao {
 	List<GenFile> getGenFilesRelIds(@Param("relIds") List<Integer> relIds);
 
 	void changeDeleteFileById(@Param("id") int id);
+
+	void restoreFileById(@Param("id") int id,@Param("fileDir") String fileDir);
+
+	int getGenFilesTotalCountByDel();
+
+	List<GenFile> getForPrintGenFilesByDel(@Param("limitStart") int limitStart, @Param("limitTake") int limitTake);
 }

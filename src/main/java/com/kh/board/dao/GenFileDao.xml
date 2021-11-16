@@ -69,13 +69,23 @@
 		</set>
 		WHERE id = #{id}
 	</update>
-	
+		
 	<update id="changeDeleteFileById">
 		UPDATE genFile
 		<set>
 			delDate = NOW(),
 			delStatus = 1,
-			relId = 0
+			fileDir = "deleteFolder"
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="restoreFileById">
+		UPDATE genFile
+		<set>
+			updateDate = NOW(),
+			delStatus = 0,
+			fileDir = #{fileDir}
 		</set>
 		WHERE id = #{id}
 	</update>
@@ -89,6 +99,22 @@
 		DELETE FROM genFile
 		WHERE id = #{id}
 	</delete>
+	
+	<select id="getGenFilesTotalCountByDel" resultType="int">
+		SELECT COUNT(*)
+		FROM genFile
+		WHERE delStatus = 1
+	</select>
+	
+	<select id="getForPrintGenFilesByDel" resultType="GenFile">
+		SELECT G.*
+		FROM genFile AS G
+		WHERE G.delStatus = 1
+		ORDER BY G.id DESC
+		<if test="limitStart != null and limitTake != null">
+			LIMIT #{limitStart}, #{limitTake}
+		</if>
+	</select>
 </mapper>
 
 
