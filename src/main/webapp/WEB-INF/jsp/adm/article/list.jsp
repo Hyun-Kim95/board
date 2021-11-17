@@ -69,7 +69,7 @@
 						<div class="mt-2">
 							<a href="${detailUrl}"
 								class="text-2xl text-gray-700 font-bold hover:underline">${article.title}</a>
-							<c:if test="${thumbUrl != null}">
+							<c:if test="${thumbUrl != null && thumbFile.delStatus == false}">
 								<a class="block" href="${detailUrl}"> <img class="max-w-sm"
 									src="${thumbUrl}" alt="" />
 								</a>
