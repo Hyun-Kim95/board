@@ -44,6 +44,13 @@
 		ORDER BY id DESC
 	</select>
 	
+	<select id="getArticlesByDel" resultType="Article">
+		SELECT *
+		FROM article
+		WHERE delStatus = 1
+		ORDER BY id DESC
+	</select>
+	
 	<select id="getArticlesBoardId" resultType="Article">
 		SELECT *
 		FROM article

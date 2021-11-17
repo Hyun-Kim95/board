@@ -45,6 +45,13 @@
 		ORDER BY fileNo
 	</select>
 
+	<select id="getGenFilesByDel" resultType="GenFile">
+		SELECT *
+		FROM genFile
+		WHERE delStatus = 1
+		ORDER BY fileNo
+	</select>
+	
 	<select
 		id="getGenFilesRelIds"
 		resultType="GenFile">

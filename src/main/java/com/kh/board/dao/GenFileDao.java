@@ -33,4 +33,6 @@ public interface GenFileDao {
 	int getGenFilesTotalCountByDel();
 
 	List<GenFile> getForPrintGenFilesByDel(@Param("limitStart") int limitStart, @Param("limitTake") int limitTake);
+
+	List<GenFile> getGenFilesByDel();
 }

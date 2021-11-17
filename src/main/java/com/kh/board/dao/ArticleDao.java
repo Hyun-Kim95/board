@@ -45,4 +45,6 @@ public interface ArticleDao {
 	void restoreArticle(@Param("id")int id);
 
 	int getArticlesTotalCountByDelGenFile();
+
+	List<Article> getArticlesByDel();
 }
