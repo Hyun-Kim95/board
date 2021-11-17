@@ -49,12 +49,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		registry.addInterceptor(beforeActionInterceptor).addPathPatterns("/**").excludePathPatterns("/resource/**")
 				.excludePathPatterns("/gen/**");
 
-		// 어드민 필요한 경우를 adm으로 시작하는 전체로 설정 후에 예외로 로그인 같은 것들 적어줌
-		registry.addInterceptor(needAdminInterceptor).addPathPatterns("/adm/**")
-				.excludePathPatterns("/adm/member/login").excludePathPatterns("/adm/member/doLogin")
-				.excludePathPatterns("/adm/member/join").excludePathPatterns("/adm/member/doJoin")
-				.excludePathPatterns("/adm/member/getLoginIdDup");
-
 		// 로그인 필요한 경우를 전체로 설정 후 필요 없는 경우 설정
 		registry.addInterceptor(needLoginInterceptor).addPathPatterns("/**").excludePathPatterns("/")
 				.excludePathPatterns("/adm/**").excludePathPatterns("/gen/**").excludePathPatterns("/resource/**")
@@ -67,6 +61,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
 				.excludePathPatterns("/test/**").excludePathPatterns("/error")
 				.excludePathPatterns("/usr/member/getLoginIdDup");
 
+		// 어드민 필요한 경우를 adm으로 시작하는 전체로 설정 후에 예외로 로그인 같은 것들 적어줌
+		registry.addInterceptor(needAdminInterceptor).addPathPatterns("/adm/**")
+				.excludePathPatterns("/adm/member/login").excludePathPatterns("/adm/member/doLogin")
+				.excludePathPatterns("/adm/member/join").excludePathPatterns("/adm/member/doJoin")
+				.excludePathPatterns("/adm/member/getLoginIdDup");
+				
 		// 로그인 상태에서 접속할 수 없는 URI 전부 기술
 		registry.addInterceptor(needLogoutInterceptor).addPathPatterns("/adm/member/login")
 				.addPathPatterns("/adm/member/doLogin").addPathPatterns("/usr/member/login")
