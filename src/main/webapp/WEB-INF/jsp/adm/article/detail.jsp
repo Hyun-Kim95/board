@@ -19,11 +19,9 @@
 					class="btn-primary bg-blue-500 hover:bg-blue-dark text-white font-bold py-1 px-2 rounded">삭제</a>
 			</div>
 			<div class="flex flex-row mt-2 py-3">
-				<div class="flex flex-col mb-2 ml-4 mt-1">
+				<div class="flex flex-col mb-2 mt-1">
 					<div class="text-gray-600 font-semibold">작성자 : ${article.extra__writer}</div>
-					<div class="flex w-full mt-1">
-						<div class="text-gray-400 font-thin text-xs">${article.regDate}</div>
-					</div>
+					<div class="text-gray-400 font-thin text-xs">${article.regDate}</div>
 				</div>
 			</div>
 			<div class="border-b border-gray-100"></div>
