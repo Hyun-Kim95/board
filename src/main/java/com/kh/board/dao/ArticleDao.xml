@@ -152,6 +152,7 @@
 		UPDATE article
 		<set>
 			updateDate = NOW(),
+			delDate = null,
 			delStatus = 0
 		</set>
 		WHERE id = #{id}

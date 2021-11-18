@@ -91,6 +91,7 @@
 		UPDATE genFile
 		<set>
 			updateDate = NOW(),
+			delDate = null,
 			delStatus = 0,
 			fileDir = #{fileDir}
 		</set>
