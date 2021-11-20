@@ -1,3 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="foot.jspf" %>
+
+<div class="flex justify-center rounded-md mt-3 container mx-auto">
+    <footer id="footer" class="z-50">
+        <div tabindex="0" aria-label="footer" class="focus:outline-none border-t border-b border-gray-200 dark:border-gray-700 py-16">
+        	<div class="items-center logo">
+        		<a class="focus:outline-none" tabindex="0" role="link" aria-label="home link" href="#">
+					<i class="fas fa-university"></i>
+					footer
+       			</a>
+        	</div>
+            <div class="item-center logo">
+				<a target="_blank" aria-label="Github" href="https://github.com/Hyun-Kim95">
+				    <i class="fab fa-github"></i>
+				</a>
+            </div>
+        </div>
+    </footer>
+</div>
