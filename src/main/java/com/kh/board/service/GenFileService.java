@@ -27,7 +27,7 @@ public class GenFileService {
 
 	@Autowired
 	private GenFileDao genFileDao;
-
+	// 첨부파일의 메타 정보들을 저장
 	public ResultData saveMeta(int relId, int fileNo, String originFileName, String fileExtTypeCode,
 			String fileExtType2Code, String fileExt, int fileSize, String fileDir) {
 
@@ -39,7 +39,7 @@ public class GenFileService {
 		int id = Util.getAsInt(param.get("id"), 0);
 		return new ResultData("S-1", "성공하였습니다.", "id", id);
 	}
-
+	// 실제 파일 저장
 	public ResultData save(MultipartFile multipartFile) {
 		String fileInputName = multipartFile.getName();
 		String[] fileInputNameBits = fileInputName.split("__");
@@ -59,20 +59,20 @@ public class GenFileService {
 		String fileExtTypeCode = Util.getFileExtTypeCodeFromFileName(multipartFile.getOriginalFilename());
 		String fileExtType2Code = Util.getFileExtType2CodeFromFileName(multipartFile.getOriginalFilename());
 		String fileExt = Util.getFileExtFromFileName(multipartFile.getOriginalFilename()).toLowerCase();
-
+		// 확장자 편하게 바꿈
 		if (fileExt.equals("jpeg")) {
 			fileExt = "jpg";
 		} else if (fileExt.equals("htm")) {
 			fileExt = "html";
 		}
-
+		// 파일의 저장 폴더명을 위해서 현제 달을 구해옴
 		String fileDir = Util.getNowYearMonthDateStr();
-
+		// 파일첨부 위치에 원래 첨부파일이 있으면 그 파일은 삭제처리
 		if (relId > 0) {
 			GenFile oldGenFile = getGenFile(relId, fileNo);
 
 			if (oldGenFile != null) {
-				deleteGenFile(oldGenFile);
+				changeDeleteFileById(oldGenFile);
 			}
 		}
 
@@ -110,7 +110,7 @@ public class GenFileService {
 	public GenFile getGenFile(int relId, int fileNo) {
 		return genFileDao.getGenFile(relId, fileNo);
 	}
-
+	
 	public ResultData saveFiles(Map<String, Object> param, MultipartRequest multipartRequest) {
 		// 업로드 시작
 		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
@@ -119,7 +119,7 @@ public class GenFileService {
 
 		for (String fileInputName : fileMap.keySet()) {
 			MultipartFile multipartFile = fileMap.get(fileInputName);
-
+			// 첨부파일이 있으면 추가 
 			if (multipartFile.isEmpty() == false) {
 				ResultData fileResultData = save(multipartFile);
 				int genFileId = (int) fileResultData.getBody().get("id");
@@ -157,7 +157,7 @@ public class GenFileService {
 	public void changeRelId(int id, int relId) {
 		genFileDao.changeRelId(id, relId);
 	}
-
+	// 첨부파일 여러개 삭제 처리
 	public void changeDeleteGenFilesByRelId(int relId) {
 		List<GenFile> genFiles = genFileDao.getGenFiles(relId);
 
@@ -191,7 +191,7 @@ public class GenFileService {
 			e.printStackTrace();
 		}
 	}
-
+	// 첨부파일 완전삭제
 	public void deleteGenFile(GenFile genFile) {
 		String filePath = genFile.getFilePath(genFileDirPath);
 		Util.deleteFile(filePath);
@@ -239,7 +239,7 @@ public class GenFileService {
 			deleteGenFile(genFile);
 		}
 	}
-
+	// 첨부파일 복구
 	public void restoreGenFilesByRelId(int relId) {
 		List<GenFile> genFiles = genFileDao.getGenFiles(relId);
 
@@ -250,7 +250,7 @@ public class GenFileService {
 					genFileDirPath);
 		}
 	}
-
+	// 삭제처리된 첨부파일 갯수
 	public int getGenFilesTotalCountByDel() {
 		return genFileDao.getGenFilesTotalCountByDel();
 	}

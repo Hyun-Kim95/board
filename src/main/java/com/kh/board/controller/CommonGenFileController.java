@@ -29,6 +29,7 @@ import com.kh.board.service.GenFileService;
 
 @Controller
 public class CommonGenFileController {
+	// 첨부파일 저장 위치
 	@Value("${custom.genFileDirPath}")
 	private String genFileDirPath;
 
@@ -47,9 +48,12 @@ public class CommonGenFileController {
 		String filePath = genFile.getFilePath(genFileDirPath);
 
 		Resource resource = new InputStreamResource(new FileInputStream(filePath));
+		
 		String contentType = request.getServletContext().getMimeType(new File(filePath).getAbsolutePath());
 		String name = getFileNm(genFile.getOriginFileName());
+		// 알려지지 않은 파일 타입이 올 경우를 위해
 		if (contentType == null) {
+			// 다른 모든 경우를 위한 기본값
 			contentType = "application/octet-stream";
 		}
 

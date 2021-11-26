@@ -129,12 +129,12 @@ public class UsrArticleController extends BaseController{
 		return "usr/article/list";
 	}
 	
-	@RequestMapping("/usr/article/add")
+	@RequestMapping("/usr/article/add")	// 게시물 추가 페이지로 이동
 	public String showAdd(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 		return "usr/article/add";
 	}
 
-	@RequestMapping("/usr/article/doAdd")
+	@RequestMapping("/usr/article/doAdd")	// 실제 게시물 추가
 	public String doAdd(@RequestParam Map<String, Object> param, HttpServletRequest req,
 			MultipartRequest multipartRequest) {
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
@@ -173,7 +173,7 @@ public class UsrArticleController extends BaseController{
 		return msgAndReplace(req, "게시물이 삭제되었습니다.", "../article/list");
 	}
 
-	@RequestMapping("/usr/article/modify")
+	@RequestMapping("/usr/article/modify")	// 게시물 수정 페이지로 이동
 	public String showModify(Integer id, HttpServletRequest req) {
 		if (id == null) {
 			return msgAndBack(req, "id를 입력해주세요.");
@@ -195,7 +195,7 @@ public class UsrArticleController extends BaseController{
 		return "usr/article/modify";
 	}
 
-	@RequestMapping("/usr/article/doModify")
+	@RequestMapping("/usr/article/doModify")	// 실제 수정
 	public String doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 
 		int id = Util.getAsInt(param.get("id"), 0);

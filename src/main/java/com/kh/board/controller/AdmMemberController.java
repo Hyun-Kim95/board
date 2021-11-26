@@ -19,11 +19,11 @@ public class AdmMemberController extends BaseController{
 	@Autowired
 	private MemberService memberService;
 
-
+	// 회원관리 리스트
 	@RequestMapping("/adm/member/list")
 	public String showList(HttpServletRequest req, @RequestParam(defaultValue = "1") int page,
 			@RequestParam Map<String, Object> param) {
-		
+		// 페이징
 		int itemsInAPage = 20;
 
 		List<Member> members = memberService.getForPrintMembers(null, null, page, itemsInAPage, param);
@@ -32,7 +32,7 @@ public class AdmMemberController extends BaseController{
 
 		return "adm/member/list";
 	}
-
+	// 회원정보 수정 페이지
 	@RequestMapping("/adm/member/modify")
 	public String showModify(Integer id, HttpServletRequest req) {
 		if (id == null) {
@@ -49,15 +49,17 @@ public class AdmMemberController extends BaseController{
 
 		return "adm/member/modify";
 	}
-
+	// 정보를 받아서 수정진행
 	@RequestMapping("/adm/member/doModify")
 	public String doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
+		// 로그인 비번이 공백으로 들어와도 null로 바꿔주기 위해
+		param.put("loginPw", Util.ifEmpty(param.get("loginPw"), null));
 		
 		memberService.modifyMember(param);
 		
 		return msgAndReplace(req, "회원정보가 수정되었습니다.", "../member/list");
 	}
-	
+	// 자세히보기
 	@RequestMapping("/adm/member/detail")
 	public String showDetail(HttpServletRequest req, @RequestParam Map<String, Object> param) {
 
@@ -69,7 +71,7 @@ public class AdmMemberController extends BaseController{
 
 		return "adm/member/detail";
 	}
-	
+	// 회원 삭제
 	@RequestMapping("/adm/member/doDelete")
 	public String doDelete(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 		

@@ -15,7 +15,7 @@ import com.kh.board.dto.Member;
 import com.kh.board.dto.ResultData;
 import com.kh.board.service.MemberService;
 import com.kh.board.util.Util;
-
+// 로그인, 회원가입, 메인페이지 등을 관리
 @Controller
 public class HomeController {
 	@Autowired
@@ -23,7 +23,7 @@ public class HomeController {
 	
 	@GetMapping(value = {"/usr/member/getLoginIdDup","/adm/member/getLoginIdDup"})
 	@ResponseBody
-	public ResultData getLoginIdDup(String loginId) {
+	public ResultData getLoginIdDup(String loginId) {			// 회원가입 시 확인할 것들
 		if (loginId == null) {
 			return new ResultData("F-5", "loginId를 입력해주세요.");
 		}
@@ -59,6 +59,7 @@ public class HomeController {
 	
 	@RequestMapping(value = {"/adm/member/login", "/usr/member/login"})
 	public String showLogin() {
+		// 관리자든 유저페이지든 유저페이지로그인 화면으로 이동
 		return "usr/member/login";
 	}
 
@@ -86,7 +87,7 @@ public class HomeController {
 		session.setAttribute("loginedMemberId", existingMember.getId());
 
 		String msg = String.format("%s님 환영합니다.", existingMember.getNickname());
-
+		// 이동할 주소가 없으면 유저메인페이지로 이동
 		redirectUrl = Util.ifEmpty(redirectUrl, "../../usr/home/main");
 
 		return Util.msgAndReplace(msg, redirectUrl);
@@ -115,7 +116,7 @@ public class HomeController {
 		}
 
 		Member existingMember = memberService.getMemberByLoginId((String) param.get("loginId"));
-
+		// 이미 가입된 아이디 인지와 공백인지 확인
 		if (existingMember != null) {
 			return Util.msgAndBack("이미 사용중인 로그인아이디 입니다.");
 		}
@@ -152,6 +153,7 @@ public class HomeController {
 	@RequestMapping(value = {"/usr/member/doLogout", "/adm/member/doLogout"})
 	@ResponseBody
 	public String doLogout(HttpSession session) {
+		// 세션에서 로그인정보를 삭제
 		session.removeAttribute("loginedMemberId");
 
 		return Util.msgAndReplace("로그아웃 되었습니다.", "../member/login");

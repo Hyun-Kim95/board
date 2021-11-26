@@ -18,7 +18,7 @@ public class UsrMemberController extends BaseController{
 	@Autowired
 	private MemberService memberService;	
 	
-	@RequestMapping("/usr/member/modify")
+	@RequestMapping("/usr/member/modify")	// 본인 정보 수정 페이지
 	public String showModify(HttpServletRequest req) {
 		Member member = (Member)req.getAttribute("loginedMember");
 		
@@ -31,9 +31,9 @@ public class UsrMemberController extends BaseController{
 		return "usr/member/modify";
 	}
 
-	@RequestMapping("/usr/member/doModify")
+	@RequestMapping("/usr/member/doModify")	// 정보 수정
 	public String doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
-				
+		// 로그인 비번이 공백으로 들어와도 null로 바꿔주기 위해				
 		param.put("loginPw", Util.ifEmpty(param.get("loginPw"), null));
 		
 		memberService.modifyMember(param);

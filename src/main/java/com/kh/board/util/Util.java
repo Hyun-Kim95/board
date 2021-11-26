@@ -26,14 +26,14 @@ public class Util {
 		Date time = new Date();
 		return format1.format(time);
 	}
-
+	// 받은 인자들을 map으로 리턴해줌
 	public static Map<String, Object> mapOf(Object... args) {
 		if (args.length % 2 != 0) {
 			throw new IllegalArgumentException("인자를 짝수개 입력해주세요.");
 		}
 
 		int size = args.length / 2;
-
+		// 키의 순서가 지켜짐(LinkedHashMap)
 		Map<String, Object> map = new LinkedHashMap<>();
 
 		for (int i = 0; i < size; i++) {
@@ -56,7 +56,7 @@ public class Util {
 
 		return map;
 	}
-
+	// int타입으로 바꿔서 flxjsgowna
 	public static int getAsInt(Object object, int defaultValue) {
 		if (object instanceof BigInteger) {
 			return ((BigInteger) object).intValue();
@@ -94,7 +94,7 @@ public class Util {
 
 		return sb.toString();
 	}
-
+	// param을 Json형식의 String타입으로 변경
 	public static String toJsonStr(Map<String, Object> param) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -105,7 +105,7 @@ public class Util {
 
 		return "";
 	}
-
+	// request를 Map타입으로 바꿈
 	public static Map<String, Object> getParamMap(HttpServletRequest request) {
 		Map<String, Object> param = new HashMap<>();
 
@@ -131,10 +131,6 @@ public class Util {
 
 	public static <T> T ifNull(T data, T defaultValue) {
 		return data != null ? data : defaultValue;
-	}
-
-	public static <T> T reqAttr(HttpServletRequest req, String attrName, T defaultValue) {
-		return (T) ifNull(req.getAttribute(attrName), defaultValue);
 	}
 
 	public static boolean isEmpty(Object data) {
@@ -170,7 +166,7 @@ public class Util {
 		
 		return data;
 	}
-	
+	// 확장자 정리
 	public static String getFileExtTypeCodeFromFileName(String fileName) {
 		String ext = getFileExtFromFileName(fileName).toLowerCase();
 
@@ -214,7 +210,7 @@ public class Util {
 
 		return "etc";
 	}
-
+	// 확장자 확인
 	public static String getFileExtFromFileName(String fileName) {
 		int pos = fileName.lastIndexOf(".");
 		String ext = fileName.substring(pos + 1);
@@ -242,17 +238,17 @@ public class Util {
 		
 		return true;
 	}
-	
+	// 숫자가 커질 경우에 보기 좋게 하기 위해서
 	public static String numberFormat(int num) {
 		DecimalFormat df = new DecimalFormat("###,###,###");
 		
 		return df.format(num);
 	}
-	
+
 	public static String numberFormat(String numStr) {
 		return numberFormat(Integer.parseInt(numStr));
 	}
-
+	// 회원가입시 모든 글자가 숫자로만 되어 있는지 확인
 	public static boolean allNumberString(String str) {
 		if ( str == null ) {
 			return false;
@@ -270,7 +266,7 @@ public class Util {
 		
 		return true;
 	}
-
+	// 회원가입시 숫자로 시작하는지 확인
 	public static boolean startsWithNumberString(String str) {
 		if ( str == null ) {
 			return false;
@@ -282,7 +278,7 @@ public class Util {
 		
 		return Character.isDigit(str.charAt(0));
 	}
-
+	// 회원가입시 영문과 숫자로만 조합이 가능
 	public static boolean isStandardLoginIdString(String str) {
 		if ( str == null ) {
 			return false;

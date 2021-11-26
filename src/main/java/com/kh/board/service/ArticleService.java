@@ -32,13 +32,13 @@ public class ArticleService {
 		articleDao.addArticle(param);
 
 		int id = Util.getAsInt(param.get("id"), 0);
-		
+		// 첨부파일의 relId 변경(0 -> article의 Id)
 		genFileService.changeInputFileRelIds(param, id);
 
 		return id;
 	}
 
-	public void deleteArticle(int id) {
+	public void deleteArticle(int id) {	// 삭제가 아닌 delId와 delStatus를 변경
 		articleDao.deleteChangeArticle(id);
 
 		genFileService.changeDeleteGenFilesByRelId(id);
@@ -55,7 +55,7 @@ public class ArticleService {
 	public List<Article> getArticles(String searchKeywordType, String searchKeyword) {
 		return articleDao.getArticles(searchKeywordType, searchKeyword);
 	}
-
+	// 로그인 한 ID가 수정 가능한 Id 인지 확인
 	public ResultData getActorCanModifyRd(Article article, Member actor) {
 		if (article.getMemberId() == actor.getId()) {
 			return new ResultData("S-1", "가능합니다.");
@@ -100,7 +100,7 @@ public class ArticleService {
 	public Board getBoard(int id) {
 		return articleDao.getBoard(id);
 	}
-
+	// 게시물의 전체 갯수 리턴
 	public int getArticlesTotalCount(int boardId, String searchKeywordType, String searchKeyword) {
 		return articleDao.getArticlesTotalCount(boardId, searchKeywordType, searchKeyword);
 	}
@@ -108,17 +108,17 @@ public class ArticleService {
 	public List<Article> getArticlesBoardId(int id) {
 		return articleDao.getArticlesBoardId(id);
 	}
-
+	// 완전 삭제
 	public void deleteCompletelyArticle(int id) {
 		articleDao.deleteArticle(id);
 
 		genFileService.deleteGenFiles(id);
 	}
-
+	// 삭제된 파일들의 전체 갯수 리턴
 	public int getArticlesTotalCountByDel(int boardId, String searchKeywordType, String searchKeyword) {
 		return articleDao.getArticlesTotalCountByDel(boardId, searchKeywordType, searchKeyword);
 	}
-
+	// 삭제된 파일 복구
 	public void doRestore(int id) {
 		genFileService.restoreGenFilesByRelId(id);
 		articleDao.restoreArticle(id);

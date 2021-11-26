@@ -202,7 +202,8 @@ public class AdmDeleteFileController extends BaseController {
 		
 		return msgAndReplace(req, "파일이 완전삭제되었습니다.", "../delArticle/genList");
 	}
-
+	
+	// 복구
 	@RequestMapping("/adm/delArticle/restore")
 	public String doRestore(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 

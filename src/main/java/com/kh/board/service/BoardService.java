@@ -15,7 +15,7 @@ import com.kh.board.util.Util;
 public class BoardService {
 	@Autowired
 	private BoardDao boardDao;
-
+	// 게시판 추가
 	public ResultData addBoard(Map<String, Object> param) {
 		boardDao.addBoard(param);
 
