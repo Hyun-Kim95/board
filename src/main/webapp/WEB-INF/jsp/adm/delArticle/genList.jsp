@@ -35,6 +35,7 @@
 			<c:forEach items="${genFiles}" var="genFile">
 				<div class="bg-gray-100 m-1 p-2 shadow-md">
 					<div class="items-center mt-10">
+						<div class="font-bold">작성자 : ${genFile.extra__writer}</div>
 						<div class="font-bold">게시물 번호 : ${genFile.relId}</div>
 						<div class="mt-1 font-light text-gray-600">삭제일시 : ${genFile.delDate}</div>
 					</div>

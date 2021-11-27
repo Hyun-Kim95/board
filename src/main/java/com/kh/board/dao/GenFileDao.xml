@@ -115,8 +115,15 @@
 	</select>
 	
 	<select id="getForPrintGenFilesByDel" resultType="GenFile">
-		SELECT G.*
+		SELECT G.*,
+		IFNULL(M.nickname, "탈퇴회원") AS extra__writer
 		FROM genFile AS G
+		INNER JOIN
+		article AS A
+		ON A.id = G.relId
+		INNER JOIN
+		`member` AS M
+		ON M.id = A.memberId
 		WHERE G.delStatus = 1
 		ORDER BY G.id DESC
 		<if test="limitStart != null and limitTake != null">
