@@ -5,7 +5,7 @@
 
 <section class="section-1">
 	<div class="bg-white shadow-md rounded container mx-auto p-8 mt-8">
-		게시판 프로젝트
+		게시판 프로젝트(유저)
 	</div>
 </section>
 

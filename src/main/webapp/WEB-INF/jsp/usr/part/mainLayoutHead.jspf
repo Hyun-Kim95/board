@@ -8,7 +8,7 @@
 			<span>
 				<i class="fas fa-university"></i>
 			</span>
-			<span>게시판 프로젝트 (유저)</span>
+			<span class="hidden sm:block">게시판 프로젝트 (유저)</span>
 		</a>
 
 		<div class="flex-grow"></div>
@@ -17,22 +17,26 @@
 			<ul class="flex h-full">
 				<li>
 					<a class="text-xl px-4 flex items-center h-full hover:underline" href="/adm/home/main">
-						<span>관리자 홈</span>
+						<span><i class="fas fa-house-user"></i></span>
+						<span class="hidden sm:block">관리자 홈</span>
 					</a>
 				</li>
 				<li>
 					<a class="text-xl px-4 flex items-center h-full hover:underline" href="/usr/article/list?boardId=1">
-						<span>게시판</span>
+						<span><i class="far fa-clipboard"></i></span>
+						<span class="hidden sm:block">게시판</span>
 					</a>
 				</li>
 				<li>
 					<a class="text-xl px-4 flex items-center h-full hover:underline" href="/usr/member/detail">
-						<span>마이페이지</span>
+						<span><i class="fas fa-user"></i></span>
+						<span class="hidden sm:block">마이페이지</span>
 					</a>
 				</li>
 				<li>
 					<a class="text-xl px-4 flex items-center h-full hover:underline" href="/usr/member/doLogout">
-						<span>로그아웃</span>
+						<span><i class="fas fa-sign-out-alt"></i></span>
+						<span class="hidden sm:block">로그아웃</span>
 					</a>
 				</li>
 			</ul>

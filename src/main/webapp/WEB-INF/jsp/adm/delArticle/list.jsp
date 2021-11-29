@@ -57,32 +57,32 @@
 						<c:set var="detailUrl" value="detail?id=${article.id}" />
 						<c:set var="thumbFileNo" value="${String.valueOf(1)}" />
 						<c:set var="thumbFile" value="${article.extra.file[thumbFileNo]}" />
-						<c:set var="thumbUrl" value="${thumbFile.getForPrintUrl()}" />
+						<c:set var="thumbUrl" value="${thumbFile.mediaHtml}" />
 						<div class="flex items-center mt-10">
 							<a href="${detailUrl}" class="font-bold">NO. ${article.id}</a>
 							<a href="${detailUrl}" class="ml-2 font-light text-gray-600">${article.delDate}</a>
 							<div class="flex-grow"></div>
 							<a href="list?boardId=${article.boardId}"
-								class="px-2 py-1 bg-gray-600 text-gray-100 font-bold rounded hover:bg-gray-500">${article.extra__boardName}</a>
+								class="px-2 py-1 bg-gray-600 text-gray-100 font-bold rounded hover:bg-gray-500 hidden sm:block">${article.extra__boardName}</a>
 						</div>
 						<div class="mt-2">
 							<a href="${detailUrl}"
 								class="text-2xl text-gray-700 font-bold hover:underline">${article.title}</a>
 							<c:if test="${thumbUrl != null}">
 								<a class="block" href="${detailUrl}">
-									<img class="max-w-sm" src="${thumbUrl}" alt="" />
+									${thumbUrl}
 								</a>
 							</c:if>
 							<a href="${detailUrl}" class="mt-2 text-gray-600 block">${article.body}</a>
 						</div>
 						<div class="flex items-center mt-4">
 							<a href="detail?id=${article.id}"
-								class="text-blue-500 hover:underline">자세히 보기</a>
+								class="text-blue-500 hover:underline">자세히<br>보기</a>
 							<a onclick="if ( !confirm('복구하시겠습니까?') ) return false;" href="restore?id=${article.id}"
 								class="ml-2 text-blue-500 hover:underline">복구</a>
 							<a onclick="if ( !confirm('완전삭제하시겠습니까?') ) return false;"
 								href="deleteCompletely?id=${article.id}"
-								class="ml-2 text-blue-500 hover:underline">완전 삭제</a>
+								class="ml-2 text-blue-500 hover:underline">완전<br>삭제</a>
 							<div class="flex-grow"></div>
 							<div>
 								<a class="flex items-center">
