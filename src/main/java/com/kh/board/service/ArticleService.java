@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.board.dao.ArticleDao;
+import com.kh.board.dao.ReplyDao;
 import com.kh.board.dto.Article;
 import com.kh.board.dto.Board;
 import com.kh.board.dto.GenFile;
@@ -23,6 +24,8 @@ public class ArticleService {
 	private ArticleDao articleDao;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private ReplyDao replyDao;
 
 	public Article getArticle(int id) {
 		return articleDao.getArticle(id);
@@ -39,6 +42,8 @@ public class ArticleService {
 	}
 
 	public void deleteArticle(int id) {	// 삭제가 아닌 delId와 delStatus를 변경
+		replyDao.deleteReplies(id);
+		
 		articleDao.deleteChangeArticle(id);
 
 		genFileService.changeDeleteGenFilesByRelId(id);

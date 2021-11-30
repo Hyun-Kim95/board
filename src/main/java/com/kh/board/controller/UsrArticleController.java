@@ -15,9 +15,11 @@ import org.springframework.web.multipart.MultipartRequest;
 import com.kh.board.dto.Article;
 import com.kh.board.dto.Board;
 import com.kh.board.dto.GenFile;
+import com.kh.board.dto.Reply;
 import com.kh.board.service.ArticleService;
 import com.kh.board.service.BoardService;
 import com.kh.board.service.GenFileService;
+import com.kh.board.service.ReplyService;
 import com.kh.board.util.Util;
 
 @Controller
@@ -28,6 +30,8 @@ public class UsrArticleController extends BaseController{
 	private GenFileService genFileService;
 	@Autowired
 	private BoardService boardService;
+	@Autowired
+	private ReplyService replyService;
 
 	@RequestMapping("/usr/article/detail")
 	public String showDetail(@RequestParam Map<String, Object> param, HttpServletRequest req, Integer id) {
@@ -38,7 +42,8 @@ public class UsrArticleController extends BaseController{
 		Article article = articleService.getForPrintArticle(id);
 		// 게시판 정보(디테일에서 위에 게시판 이름보이게 하려고)
 		Board board = boardService.getBoard(article.getBoardId());
-		
+		// 댓글 정보
+		List<Reply> replies = replyService.getForPrintReplies(id);
 		// 첨부파일 리스트
 		List<GenFile> files = genFileService.getGenFiles(article.getId());
 
@@ -54,6 +59,7 @@ public class UsrArticleController extends BaseController{
 		// jsp에서 사용할 수 있도록 req에 추가
 		req.setAttribute("article", article);
 		req.setAttribute("board", board);
+		req.setAttribute("replies", replies);
 		
 		return "usr/article/detail";
 	}
